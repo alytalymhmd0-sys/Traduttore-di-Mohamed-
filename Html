@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مترجم ليلى المتطور - Layla Advanced Translator</title>
+    <meta name="description" content="تطبيق ترجمة متطور يدعم أكثر من 100 لغة مع ميزات ذكية">
+    <meta name="keywords" content="ترجمة, مترجم, لغات, ترجمة فورية, translator">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- شريط التحميل -->
+    <div id="loading-bar" class="loading-bar">
+        <div class="loading-progress"></div>
+    </div>
+
+    <!-- الحاوية الرئيسية -->
+    <div class="app-container">
+        <!-- الرأس -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>مترجم ليلى</h1>
+                        <span class="logo-subtitle">Layla Translator</span>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <button id="theme-toggle" class="control-btn" title="تبديل الوضع">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="history-btn" class="control-btn" title="تاريخ الترجمات">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button id="settings-btn" class="control-btn" title="الإعدادات">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <!-- إحصائيات سريعة -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-globe"></i>
+                    <span id="supported-languages">100+ لغة</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>ترجمة فورية</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>آمن ومجاني</span>
+                </div>
+            </div>
+
+            <!-- منطقة الترجمة الرئيسية -->
+            <div class="translation-area">
+                <!-- لوحة اللغة المصدر -->
+                <div class="language-panel source-panel">
+                    <div class="panel-header">
+                        <div class="language-selector">
+                            <button id="source-lang-btn" class="lang-btn">
+                                <span class="lang-flag">🌐</span>
+                                <span class="lang-name">كشف تلقائي</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="source-lang-dropdown" class="lang-dropdown">
+                                <div class="dropdown-search">
+                                    <input type="text" id="source-search" placeholder="البحث عن لغة...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="lang-list" id="source-lang-list">
+                                    <!-- سيتم ملؤها بـ JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-actions">
+                            <button id="clear-source" class="action-btn" title="مسح النص">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button id="paste-btn" class="action-btn" title="لصق">
+                                <i class="fas fa-paste"></i>
+                            </button>
+                            <button id="voice-input" class="action-btn" title="إدخال صوتي">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-area-container">
+                        <textarea 
+                            id="source-text" 
+                            class="text-area" 
+                            placeholder="اكتب أو الصق النص هنا للترجمة..."
+                            maxlength="5000"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="char-count">0</span> / 5000
+                        </div>
+                    </div>
+                    
+                    <div class="detected-language" id="detected-language">
+                        <i class="fas fa-eye"></i>
+                        <span>تم اكتشاف: <strong id="detected-lang-name">-</strong></span>
+                    </div>
+                </div>
+
+                <!-- زر التبديل -->
+                <div class="swap-container">
+                    <button id="swap-languages" class="swap-btn" title="تبديل اللغات">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+
+                <!-- لوحة اللغة المستهدفة -->
+                <div class="language-panel target-panel">
+                    <div class="panel-header">
+                        <div class="language-selector">
+                            <button id="target-lang-btn" class="lang-btn">
+                                <span class="lang-flag">🇺🇸</span>
+                                <span class="lang-name">الإنجليزية</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="target-lang-dropdown" class="lang-dropdown">
+                                <div class="dropdown-search">
+                                    <input type="text" id="target-search" placeholder="البحث عن لغة...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="lang-list" id="target-lang-list">
+                                    <!-- سيتم ملؤها بـ JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-actions">
+                            <button id="copy-translation" class="action-btn" title="نسخ الترجمة">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button id="share-translation" class="action-btn" title="مشاركة">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <button id="speak-translation" class="action-btn" title="نطق الترجمة">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-area-container">
+                        <div id="translation-result" class="translation-result">
+                            <div class="placeholder-content">
+                                <i class="fas fa-language"></i>
+                                <p>ستظهر الترجمة هنا...</p>
+                            </div>
+                        </div>
+                        <div class="translation-loading" id="translation-loading">
+                            <div class="loading-spinner"></div>
+                            <span>جاري الترجمة...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="translation-info" id="translation-info">
+                        <div class="confidence-score">
+                            <i class="fas fa-chart-line"></i>
+                            <span>دقة الترجمة: <strong id="confidence-value">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الميزات الإضافية -->
+            <div class="additional-features">
+                <div class="feature-tabs">
+                    <button class="tab-btn active" data-tab="recent">الأخيرة</button>
+                    <button class="tab-btn" data-tab="favorites">المفضلة</button>
+                    <button class="tab-btn" data-tab="phrases">عبارات شائعة</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="recent-tab" class="tab-panel active">
+                        <div class="recent-translations" id="recent-translations">
+                            <div class="empty-state">
+                                <i class="fas fa-clock"></i>
+                                <p>لا توجد ترجمات حديثة</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="favorites-tab" class="tab-panel">
+                        <div class="favorite-translations" id="favorite-translations">
+                            <div class="empty-state">
+                                <i class="fas fa-heart"></i>
+                                <p>لا توجد ترجمات مفضلة</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="phrases-tab" class="tab-panel">
+                        <div class="common-phrases" id="common-phrases">
+                            <!-- سيتم ملؤها بـ JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- التذييل -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2024 مترجم ليلى المتطور. جميع الحقوق محفوظة.</p>
+                    <p>مدعوم بتقنيات الذكاء الاصطناعي المتقدمة</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">الخصوصية</a>
+                    <a href="#" class="footer-link">الشروط</a>
+                    <a href="#" class="footer-link">الدعم</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    
+    <!-- نافذة التاريخ -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تاريخ الترجمات</h3>
+                <button class="close-modal" data-modal="history-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="history-filters">
+                    <button class="filter-btn active" data-filter="all">الكل</button>
+                    <button class="filter-btn" data-filter="today">اليوم</button>
+                    <button class="filter-btn" data-filter="week">هذا الأسبوع</button>
+                    <button class="filter-btn" data-filter="month">هذا الشهر</button>
+                </div>
+                <div class="history-list" id="history-list">
+                    <!-- سيتم ملؤها بـ JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الإعدادات -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>الإعدادات</h3>
+                <button class="close-modal" data-modal="settings-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <h4>المظهر</h4>
+                    <div class="setting-item">
+                        <label for="auto-translate">ترجمة تلقائية</label>
+                        <input type="checkbox" id="auto-translate" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="save-history">حفظ التاريخ</label>
+                        <input type="checkbox" id="save-history" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="sound-effects">الأصوات</label>
+                        <input type="checkbox" id="sound-effects" checked>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h4>اللغة</h4>
+                    <div class="setting-item">
+                        <label for="interface-lang">لغة الواجهة</label>
+                        <select id="interface-lang">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h4>البيانات</h4>
+                    <button id="clear-history" class="danger-btn">مسح التاريخ</button>
+                    <button id="export-data" class="primary-btn">تصدير البيانات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل التنبيه -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- تحميل JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
